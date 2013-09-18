@@ -1,0 +1,17 @@
+{
+	"manifest_version": 2,
+	"name": "Flying Focus",
+	"version": "1.0",
+	"description": "Smooth focus transition",
+	"content_scripts": [
+		{
+			"js": ["flying-focus.js"],
+			"css": ["flying-focus.css"],
+			"matches": [
+				"<all_urls>"
+			]
+		}
+	],
+	"author": "Nikita Vasilyev",
+	"homepage_url": "http://n12v.com/focus-transition/"
+}
