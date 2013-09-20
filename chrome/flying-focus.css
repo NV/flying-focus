@@ -15,9 +15,12 @@
 	z-index: 9999;
 }
 .flying-focus_target {
-	outline: none !important; /* Doens't work in Firefox :( */
+	outline: none !important; /* Doesn't work in Firefox :( */
 }
-
+/* http://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links/199319 */
+.flying-focus_target::-moz-focus-inner {
+	border: 0 !important;
+}
 /* Replace it with @supports rule when browsers catch up */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
 	#flying-focus {
