@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flying Focus</title>
+	<link rel="stylesheet" href="../chrome/flying-focus.css">
+	<style>
+	.flying-focus_target {
+		outline: 5px solid #f747d1 !important;
+	}
+	</style>
+</head>
+<body>
+
+<table style="width:100%;max-width:800px">
+	<tr>
+		<td style="width:1%"><input type="range"></td>
+		<td rowspan="2"><input type="checkbox" checked></td>
+		<td>
+			<input type="url" value="http://n12v.com/" size="16">
+		</td>
+		<td rowspan="2">
+			<select>
+				<option>CSS</option>
+				<option>JS</option>
+				<option>HTML</option>
+			</select>
+		</td>
+		<td>
+			<input type="number" style="width:4em" value="1">
+		</td>
+	</tr>
+	<tr>
+		<td style="width:1%">
+			<input type="radio" name="focus_transition_radio" checked>
+			<input type="radio" name="focus_transition_radio">
+		</td>
+		<td><input type="color" size="6"></td>
+		<td><button>Placebo button</button></td>
+	</tr>
+</table>
+
+<script src="../chrome/flying-focus.js"></script>
+</body>
+</html>
