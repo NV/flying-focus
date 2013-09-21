@@ -40,5 +40,11 @@
 </table>
 
 <script src="../chrome/flying-focus.js"></script>
+<script>
+document.body.onkeydown = function(event) {
+	// Screw Flying Focus:
+	//event.stopPropagation();
+};
+</script>
 </body>
 </html>
