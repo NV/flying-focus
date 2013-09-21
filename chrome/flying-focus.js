@@ -22,8 +22,8 @@ function offsetOf(elem) {
 }
 
 var movingId = 0;
-
-var prevFocused;
+var prevFocused = null;
+var isFirstFocus = true;
 
 document.documentElement.addEventListener('focus', function(event) {
 	var target = event.target;
@@ -42,29 +42,30 @@ document.documentElement.addEventListener('focus', function(event) {
 	//
 	// but it always '0px' in WebKit and Blink for some reason :(
 
-	if (prevFocused) {
-		target.classList.add('flying-focus_target');
-		show();
-		if (movingId) {
-			clearTimeout(movingId);
-		}
-		movingId = setTimeout(function() {
-			target.classList.remove('flying-focus_target');
-			hide();
-		}, DURATION);
+	if (isFirstFocus) {
+		isFirstFocus = false;
+		return;
 	}
+
+	onEnd();
+	target.classList.add('flying-focus_target');
+	flyingFocus.classList.add('flying-focus_visible');
 	prevFocused = target;
+	movingId = setTimeout(onEnd, DURATION);
 }, true);
 
 document.documentElement.addEventListener('blur', function() {
-	hide();
+	onEnd();
 }, true);
 
 
-function hide() {
+function onEnd() {
+	if (!movingId) {
+		return;
+	}
+	clearTimeout(movingId);
+	movingId = 0;
 	flyingFocus.classList.remove('flying-focus_visible');
-}
-
-function show() {
-	flyingFocus.classList.add('flying-focus_visible');
+	prevFocused.classList.remove('flying-focus_target');
+	prevFocused = null;
 }
