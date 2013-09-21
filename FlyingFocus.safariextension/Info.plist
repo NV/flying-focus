@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Nikita Vasilyev</string>
 	<key>Builder Version</key>
-	<string>9537.66</string>
+	<string>8537.59</string>
 	<key>CFBundleDisplayName</key>
 	<string>Flying Focus</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>Chrome</key>
 	<dict/>
 	<key>Content</key>
@@ -33,7 +33,7 @@
 		</array>
 	</dict>
 	<key>Description</key>
-	<string>Smooth focus transition</string>
+	<string>Animates the focus change with a visible box moving between fields as you tab on different elements.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>

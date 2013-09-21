@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Flying Focus",
-	"version": "1.0",
-	"description": "Smooth focus transition",
+	"version": "1.1",
+	"description": "Animates the focus change with a visible box moving between fields as you tab on different elements.",
 	"content_scripts": [
 		{
 			"js": ["flying-focus.js"],
