@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="../chrome/flying-focus.css">
 	<style>
 	.flying-focus_target {
-		outline: 5px solid #f747d1 !important;
+		/*outline: 5px solid #f747d1 !important;*/
 	}
 	</style>
 </head>
@@ -35,10 +35,12 @@
 			<input type="radio" name="focus_transition_radio">
 		</td>
 		<td><input type="color" size="6"></td>
-		<td><button>Placebo button</button></td>
+		<td><button style="position: absolute; right: 0; bottom: 0">Placebo button</button></td>
 	</tr>
 </table>
-
+<svg width="120" height="120" viewPort="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<polygon points="0,0 50,0 50,10 60,20 100,40 100,80 60,100 20,80 20,40"/>
+</svg>
 <script src="../chrome/flying-focus.js"></script>
 <script>
 document.body.onkeydown = function(event) {
