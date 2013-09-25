@@ -2,21 +2,16 @@
 
 ![Flying Focus icon](http://nv.github.io/flying-focus/chrome/icon_128.png)
 
-Flying Focus is a UI concept.
+Flying Focus is a UI concept. It adds a transition to the focus outline when you tab around inputs, buttons, and links.
 
-# How to build
+## [flying-focus.js](http://n12v.com/focus-transition/flying-focus.js) standalone script
 
-## A single-file library
+Includes all necessary CSS and has no external dependencies. Build with `rake standalone`.
 
-Create a flying-focus.js that can be included to any web page.
-It includes all necessary CSS and has no external dependencies.
+## [Safari extension](http://n12v.com/focus-transition/FlyingFocus.safariextz)
 
-    rake standalone
+Build with `rake safari`.
 
-## Safari extension
+## [Chrome extension](https://chrome.google.com/webstore/detail/flying-focus/koojelgeljpacclbmiflpcohjkbklplk)
 
-    rake safari
-
-## Chrome extension
-
-No build step required. Just load it as an unpacked extension from `chrome/`.
+No build step required; just load it as an unpacked extension from `chrome/`.
