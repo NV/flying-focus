@@ -1,87 +1,34 @@
-var flyingFocus = document.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
-flyingFocus.id = 'flying-focus';
-document.body.appendChild(flyingFocus);
-
 var SVGNS = "http://www.w3.org/2000/svg";
-var svg = document.createElementNS(SVGNS, 'svg');
-svg.id = 'flying-focus-lines';
-var line = document.createElementNS(SVGNS, 'line');
-var line2 = document.createElementNS(SVGNS, 'line');
-svg.appendChild(line);
-svg.appendChild(line2);
-document.body.appendChild(svg);
-function linePosition(x1, x2, y1, y2, w1, w2, h1, h2) {
-	var l2r = x1 < x2;
-	var t2b = y1 < y2;
+var flyingFocus = document.createElementNS(SVGNS, 'svg');
+flyingFocus.id = 'flying-focus';
 
-	var width = Math.abs(x1 - x2);
-	var height = Math.abs(y1 - y2);
-	var left = Math.max(x1, x2) - width;
-	var top = Math.max(y1, y2) - height;
+var polygon = document.createElementNS(SVGNS, 'polygon');
+var points = [];
+for (var i = 4; i > 0; i--) {
+	var point = flyingFocus.createSVGPoint();
+	points.push(point);
+	polygon.points.appendItem(point);
+}
+flyingFocus.appendChild(polygon);
+document.body.insertBefore(flyingFocus, document.body.firstChild);
 
-	var ld = 0;
-	if (l2r) {
-		ld = x2 -= x1;
-		x1 = 0;
-	} else {
-		ld = x1 -= x2;
-		x2 = 0;
-	}
+function close(i, j, edges) {
+	// clockwise
+	points[0].x = edges.a[i].x;
+	points[0].y = edges.a[i].y;
+	points[1].x = edges.a[j].x;
+	points[1].y = edges.a[j].y;
 
-	if (t2b) {
-		y2 -= y1;
-		y1 = 0
-	} else {
-		y1 -= y2;
-		y2 = 0;
-	}
-
-
-	if ((l2r && t2b) || (!l2r && !t2b)) {
-		line.setAttribute('x1', x1);
-		line.setAttribute('x2', x2);
-		line.setAttribute('y1', y1 + h1);
-		line.setAttribute('y2', y2 + h2);
-
-		line2.setAttribute('x1', x1 + w1);
-		line2.setAttribute('x2', x2 + w2);
-		line2.setAttribute('y1', y1);
-		line2.setAttribute('y2', y2);
-	} else {
-		line.setAttribute('x1', x1);
-		line.setAttribute('x2', x2);
-		line.setAttribute('y1', y1);
-		line.setAttribute('y2', y2);
-
-		line2.setAttribute('x1', x1 + w1);
-		line2.setAttribute('x2', x2 + w2);
-		line2.setAttribute('y1', y1 + h1);
-		line2.setAttribute('y2', y2 + h2);
-	}
-
-	svg.style.left = left + 'px';
-	svg.style.top = top + 'px';
-	svg.width = width;
-	svg.height = height;
-//	x1 -= left;
-//	x2 -= left;
-//	y1 -= top;
-//	y2 -= top;
-//
-//
-//	line.setAttribute('x1', x1);
-//	line.setAttribute('x2', x2);
-//	line.setAttribute('y1', y1);
-//	line.setAttribute('y2', y2);
+	points[3].x = edges.b[i].x;
+	points[3].y = edges.b[i].y;
+	points[2].x = edges.b[j].x;
+	points[2].y = edges.b[j].y;
 }
 
 
-var DURATION = 100;
+var DURATION = 500;
 //flyingFocus.style.transitionDuration = flyingFocus.style.WebkitTransitionDuration = DURATION / 1000 + 's';
 
-function setTransitionDuration(distance) {
-
-}
 
 function offsetOf(elem) {
 	var rect = elem.getBoundingClientRect();
@@ -120,6 +67,69 @@ var t = 0;
 var w = 0;
 var h = 0;
 
+
+
+
+function update(ax, bx, ay, by, aw, bw, ah, bh) {
+	var ax2 = ax + aw;
+	var ay2 = ay + ah;
+	var bx2 = bx + bw;
+	var by2 = by + bh;
+
+	var i = 0;
+	var j = 0;
+
+	//I'm sure there is a better way of doing it
+	if (ax < bx) {
+		if (ax2 < bx2) {
+			i = ay < by ? 1 : 0;
+			j = ay2 < by2 ? 3 : 2;
+		} else {
+			if (ay < by) {
+				i = 2;
+				j = 3;
+			} else {
+				i = 0;
+				j = 1;
+			}
+		}
+	} else {
+		if (ax2 > bx2) {
+			i = ay < by ? 0 : 1;
+			j = ay2 < by2 ? 2 : 3;
+		} else {
+			if (ay < by) {
+				if (ay2 < by2) {
+					i = 0;
+					j = 1;
+				} else {
+					i = 2;
+					j = 3;
+				}
+			} else {
+				i = 2;
+				j = 3;
+			}
+		}
+	}
+
+	close(i, j, {
+		a: [
+			{x: ax,  y: ay},
+			{x: ax2, y: ay},
+			{x: ax2, y: ay2},
+			{x: ax,  y: ay2}
+		],
+		b: [
+			{x: bx,  y: by},
+			{x: bx2, y: by},
+			{x: bx2, y: by2},
+			{x: bx,  y: by2}
+		]
+	});
+}
+
+
 document.documentElement.addEventListener('focus', function(event) {
 	var target = event.target;
 	if (target.id === 'flying-focus') {
@@ -131,30 +141,20 @@ document.documentElement.addEventListener('focus', function(event) {
 	var y = offset.top + target.offsetHeight / 2;
 	var distance = euclideanDistance(centerX, x, centerY, y);
 
-	var duration = 0.2; //Math.pow(distance, 0.6) / 100; // px per second
-	flyingFocus.style.transitionDuration = flyingFocus.style.WebkitTransitionDuration = duration + 's';
-	console.log(flyingFocus.style.transitionDuration);
+//	var duration = DURATION; //Math.pow(distance, 0.6) / 100; // px per second
+//	flyingFocus.style.transitionDuration = flyingFocus.style.WebkitTransitionDuration = DURATION / 1000 + 's';
+//	console.log(flyingFocus.style.transitionDuration);
 
-//	if (distance > 64) {
-		var p = 0.7;
-		position(
-			blend(t, offset.top, p),
-			blend(l, offset.left, p),
-			blend(w, target.offsetWidth, p),
-			blend(h, target.offsetHeight, p)
-		);
-//		flyingFocus.style.left =  + 'px';
-//		flyingFocus.style.top =  + 'px';
-//		flyingFocus.style.width =  + 'px';
-//		flyingFocus.style.height = + 'px';
-		doTransition(offset.top, offset.left, target.offsetWidth, target.offsetHeight);
-//	} else {
-//		flyingFocus.style.left = offset.left + 'px';
-//		flyingFocus.style.top = offset.top + 'px';
-//		flyingFocus.style.width = target.offsetWidth + 'px';
-//		flyingFocus.style.height = target.offsetHeight + 'px';
-//	}
-	linePosition(l, offset.left, t, offset.top, w, target.offsetWidth, h, target.offsetHeight);
+
+//		var p = 0.7;
+//		position(
+//			blend(t, offset.top, p),
+//			blend(l, offset.left, p),
+//			blend(w, target.offsetWidth, p),
+//			blend(h, target.offsetHeight, p)
+//		);
+//		doTransition(offset.top, offset.left, target.offsetWidth, target.offsetHeight);
+	update(l, offset.left, t, offset.top, w, target.offsetWidth, h, target.offsetHeight);
 	centerX = x;
 	centerY = y;
 
@@ -186,9 +186,20 @@ document.documentElement.addEventListener('focus', function(event) {
 	onEnd();
 	target.classList.add('flying-focus_target');
 	flyingFocus.classList.add('flying-focus_visible');
-	svg.classList.add('flying-focus_visible');
+
+//	target.style.zIndex = 999;
+//	prevFocused && (prevFocused.style.zIndex = 999);
+
 	prevFocused = target;
-	movingId = setTimeout(onEnd, duration * 1000);
+
+	requestAnimationFrame(function() {
+		flyingFocus.classList.add('flying-focus_transition');
+		requestAnimationFrame(function() {
+			flyingFocus.classList.add('flying-focus_hiding');
+			movingId = setTimeout(onEnd, DURATION);
+		});
+	});
+
 }, true);
 
 
@@ -227,7 +238,8 @@ function onEnd() {
 	clearTimeout(movingId);
 	movingId = 0;
 	flyingFocus.classList.remove('flying-focus_visible');
-	svg.classList.remove('flying-focus_visible');
+	flyingFocus.classList.remove('flying-focus_transition');
+	flyingFocus.classList.remove('flying-focus_hiding');
 	prevFocused.classList.remove('flying-focus_target');
 	prevFocused = null;
 }

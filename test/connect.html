@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flying Focus</title>
+	<link rel="stylesheet" href="../chrome/flying-focus.css">
+	<style>
+	.flying-focus_target {
+		/*outline: 5px solid #f747d1 !important;*/
+	}
+	input {
+		display: block;
+		width: 35px;
+		position: absolute;
+	}
+	body {
+		position: relative;
+	}
+	</style>
+</head>
+<body>
+<input id="a" class="draggable" style="top:100px; left: 0px; width: 250px;  height: 200px" value="A">
+<input id="b" class="draggable" style="top:0px; left: 100px; width: 50px;" value="B">
+<svg id="svg" width="1000" height="800" viewPort="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<polygon id="polygon" points="0,0 0,0 0,0 0,0"/>
+</svg>
+<script src="../chrome/flying-focus.js"></script>
+<script src="connect.js"></script>
+</body>
+</html>

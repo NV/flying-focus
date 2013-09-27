@@ -1,34 +1,35 @@
 #flying-focus {
 	position: absolute;
+	top: 0;
+	left: 0;
 	margin: 0;
 	background: transparent;
-	-webkit-transition-property: left, top, width, height, opacity;
-	transition-property: left, top, width, height, opacity;
+	visibility: hidden;
+	pointer-events: none;
+	/*box-shadow: 0 0 2px 3px #78aeda, 0 0 2px #78aeda inset; border-radius: 2px;*/
+}
+#flying-focus.flying-focus_transition {
+	-webkit-transition-duration: .4s;
+	transition-duration: .4s;
+	-webkit-transition-property: opacity;
+	transition-property: opacity;
 	-webkit-transition-timing-function: cubic-bezier(0, 0.2, 0, 1);
 	transition-timing-function: cubic-bezier(0, 0.2, 0, 1);
-	visibility: hidden;
-	pointer-events: none;
-	box-shadow: 0 0 2px 3px #78aeda, 0 0 2px #78aeda inset; border-radius: 2px;
+	opacity: 1;
 }
-#flying-focus-lines {
-	position: absolute;
-	left: 0;
-	top: 0;
-	visibility: hidden;
-	pointer-events: none;
-}
-#flying-focus-lines line {
-	stroke: #78aeda;
-	stroke-width: 2;
-}
-#flying-focus-lines.flying-focus_visible,
 #flying-focus.flying-focus_visible {
 	visibility: visible;
-	z-index: 9999;
+	z-index: 999;
 }
 .flying-focus_target {
-	outline: none !important; /* Doesn't work in Firefox :( */
+	z-index: 9999;
+	position: relative;
 }
+
+#flying-focus.flying-focus_hiding {
+	opacity: 0;
+}
+
 /* http://stackoverflow.com/questions/71074/how-to-remove-firefoxs-dotted-outline-on-buttons-as-well-as-links/199319 */
 .flying-focus_target::-moz-focus-inner {
 	border: 0 !important;
@@ -36,8 +37,12 @@
 /* Replace it with @supports rule when browsers catch up */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
 	#flying-focus {
-		box-shadow: none;
-		outline: 5px auto -webkit-focus-ring-color;
-		outline-offset: -3px;
+		/*box-shadow: none;*/
+		/*outline: 5px auto -webkit-focus-ring-color;*/
+		/*outline-offset: -3px;*/
 	}
+}
+
+#flying-focus polygon {
+	fill: rgba(91, 157, 217, 0.6);
 }
