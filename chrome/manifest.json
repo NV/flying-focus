@@ -9,7 +9,8 @@
 			"css": ["flying-focus.css"],
 			"matches": [
 				"<all_urls>"
-			]
+			],
+			"all_frames": true
 		}
 	],
 	"author": "Nikita Vasilyev",
