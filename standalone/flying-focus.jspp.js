@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function(e) {
+document.addEventListener('DOMContentLoaded', function() {
 	if (document.getElementById('flying-focus')) return;
 
 	/*> ../chrome/flying-focus.js */
