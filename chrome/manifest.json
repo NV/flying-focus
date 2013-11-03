@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "Flying Focus",
-	"version": "1.2",
+	"version": "1.2.1",
 	"description": "Adds a transition to the focus outline when you tab around inputs, buttons, and links.",
 	"content_scripts": [
 		{
