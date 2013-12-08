@@ -42,12 +42,6 @@ docElem.addEventListener('focus', function(event) {
 	ringElem.style.width = target.offsetWidth + 'px';
 	ringElem.style.height = target.offsetHeight + 'px';
 
-	// Would be nice to use:
-	//
-	//   ringElem.style['outline-offset'] = getComputedStyle(target, null)['outline-offset']
-	//
-	// but it always '0px' in WebKit and Blink for some reason :(
-
 	if (isFirstFocus || !isJustPressed()) {
 		return;
 	}
