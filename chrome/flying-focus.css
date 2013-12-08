@@ -4,8 +4,8 @@
 	background: transparent;
 	-webkit-transition-property: left, top, width, height;
 	transition-property: left, top, width, height;
-	-webkit-transition-timing-function: cubic-bezier(0, 0.2, 0, 1);
-	transition-timing-function: cubic-bezier(0, 0.2, 0, 1);
+	-webkit-transition-timing-function: cubic-bezier(0,1,0,1);
+	transition-timing-function: cubic-bezier(0,1,0,1);
 	visibility: hidden;
 	pointer-events: none;
 	box-shadow: 0 0 2px 3px #78aeda, 0 0 2px #78aeda inset; border-radius: 2px;

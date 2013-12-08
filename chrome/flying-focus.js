@@ -1,6 +1,6 @@
 'use strict';
 
-var DURATION = 100;
+var DURATION = 150;
 
 function initialize() {
 	ringElem = doc.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
