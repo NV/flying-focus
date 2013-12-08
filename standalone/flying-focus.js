@@ -1,78 +1,76 @@
-document.addEventListener('DOMContentLoaded', function() {
-	if (document.getElementById('flying-focus')) return;
+(function() {
+	'use strict';
 
-	var flyingFocus = document.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
-flyingFocus.id = 'flying-focus';
-document.body.appendChild(flyingFocus);
+var DURATION = 150;
 
-var DURATION = 100;
-flyingFocus.style.transitionDuration = flyingFocus.style.WebkitTransitionDuration = DURATION / 1000 + 's';
-
-function offsetOf(elem) {
-	var rect = elem.getBoundingClientRect();
-	var docElem = document.documentElement;
-	var win = document.defaultView;
-	var body = document.body;
-
-	var clientTop  = docElem.clientTop  || body.clientTop  || 0,
-		clientLeft = docElem.clientLeft || body.clientLeft || 0,
-		scrollTop  = win.pageYOffset || docElem.scrollTop  || body.scrollTop,
-		scrollLeft = win.pageXOffset || docElem.scrollLeft || body.scrollLeft,
-		top  = rect.top  + scrollTop  - clientTop,
-		left = rect.left + scrollLeft - clientLeft;
-
-	return {top: top, left: left};
-}
-
+var ringElem = null;
 var movingId = 0;
 var prevFocused = null;
-var isFirstFocus = true;
 var keyDownTime = 0;
 
-document.documentElement.addEventListener('keydown', function(event) {
+var win = window;
+var doc = document;
+var docElem = doc.documentElement;
+var body = doc.body;
+
+
+docElem.addEventListener('keydown', function(event) {
 	var code = event.which;
 	// Show animation only upon Tab or Arrow keys press.
 	if (code === 9 || (code > 36 && code < 41)) {
-		keyDownTime = now();
+		keyDownTime = Date.now();
 	}
 }, false);
 
-document.documentElement.addEventListener('focus', function(event) {
+
+docElem.addEventListener('focus', function(event) {
 	var target = event.target;
 	if (target.id === 'flying-focus') {
 		return;
 	}
-	var offset = offsetOf(target);
-	flyingFocus.style.left = offset.left + 'px';
-	flyingFocus.style.top = offset.top + 'px';
-	flyingFocus.style.width = target.offsetWidth + 'px';
-	flyingFocus.style.height = target.offsetHeight + 'px';
 
-	// Would be nice to use:
-	//
-	//   flyingFocus.style['outline-offset'] = getComputedStyle(target, null)['outline-offset']
-	//
-	// but it always '0px' in WebKit and Blink for some reason :(
-
-	if (isFirstFocus) {
-		isFirstFocus = false;
+	var isFirstFocus = false;
+	if (!ringElem) {
+		isFirstFocus = true;
+		initialize();
 		return;
 	}
 
-	if (now() - keyDownTime > 42) {
+	var offset = offsetOf(target);
+	ringElem.style.left = offset.left + 'px';
+	ringElem.style.top = offset.top + 'px';
+	ringElem.style.width = target.offsetWidth + 'px';
+	ringElem.style.height = target.offsetHeight + 'px';
+
+	// Would be nice to use:
+	//
+	//   ringElem.style['outline-offset'] = getComputedStyle(target, null)['outline-offset']
+	//
+	// but it always '0px' in WebKit and Blink for some reason :(
+
+	if (isFirstFocus || !isJustPressed()) {
 		return;
 	}
 
 	onEnd();
 	target.classList.add('flying-focus_target');
-	flyingFocus.classList.add('flying-focus_visible');
+	ringElem.classList.add('flying-focus_visible');
 	prevFocused = target;
 	movingId = setTimeout(onEnd, DURATION);
 }, true);
 
-document.documentElement.addEventListener('blur', function() {
+
+docElem.addEventListener('blur', function() {
 	onEnd();
 }, true);
+
+
+function initialize() {
+	ringElem = doc.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
+	ringElem.id = 'flying-focus';
+	ringElem.style.transitionDuration = ringElem.style.WebkitTransitionDuration = DURATION / 1000 + 's';
+	body.appendChild(ringElem);
+}
 
 
 function onEnd() {
@@ -81,25 +79,41 @@ function onEnd() {
 	}
 	clearTimeout(movingId);
 	movingId = 0;
-	flyingFocus.classList.remove('flying-focus_visible');
+	ringElem.classList.remove('flying-focus_visible');
 	prevFocused.classList.remove('flying-focus_target');
 	prevFocused = null;
 }
 
-function now() {
-	return new Date().valueOf();
+
+function isJustPressed() {
+	return Date.now() - keyDownTime < 42
 }
 
 
-	var style = document.createElement('style');
+function offsetOf(elem) {
+	var rect = elem.getBoundingClientRect();
+	var clientLeft = docElem.clientLeft || body.clientLeft;
+	var clientTop  = docElem.clientTop  || body.clientTop;
+	var scrollLeft = win.pageXOffset || docElem.scrollLeft || body.scrollLeft;
+	var scrollTop  = win.pageYOffset || docElem.scrollTop  || body.scrollTop;
+	var left = rect.left + scrollLeft - clientLeft;
+	var top =  rect.top  + scrollTop  - clientTop;
+	return {
+		top: top || 0,
+		left: left || 0
+	};
+}
+
+
+	var style = doc.createElement('style');
 	style.textContent = "#flying-focus {\
 	position: absolute;\
 	margin: 0;\
 	background: transparent;\
 	-webkit-transition-property: left, top, width, height;\
 	transition-property: left, top, width, height;\
-	-webkit-transition-timing-function: cubic-bezier(0, 0.2, 0, 1);\
-	transition-timing-function: cubic-bezier(0, 0.2, 0, 1);\
+	-webkit-transition-timing-function: cubic-bezier(0,1,0,1);\
+	transition-timing-function: cubic-bezier(0,1,0,1);\
 	visibility: hidden;\
 	pointer-events: none;\
 	box-shadow: 0 0 2px 3px #78aeda, 0 0 2px #78aeda inset; border-radius: 2px;\
@@ -124,5 +138,5 @@ function now() {
 	}\
 }\
 ";
-	document.body.appendChild(style);
-}, false);
+	body.appendChild(style);
+})();
