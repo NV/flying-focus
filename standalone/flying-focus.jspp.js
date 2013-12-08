@@ -1,9 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
-	if (document.getElementById('flying-focus')) return;
-
+(function() {
 	/*> ../chrome/flying-focus.js */
 
-	var style = document.createElement('style');
+	var style = doc.createElement('style');
 	style.textContent = "/*> ../chrome/flying-focus.css */";
-	document.body.appendChild(style);
-}, false);
+	body.appendChild(style);
+})();
