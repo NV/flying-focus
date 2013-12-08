@@ -2,13 +2,6 @@
 
 var DURATION = 150;
 
-function initialize() {
-	ringElem = doc.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
-	ringElem.id = 'flying-focus';
-	ringElem.style.transitionDuration = ringElem.style.WebkitTransitionDuration = DURATION / 1000 + 's';
-	body.appendChild(ringElem);
-}
-
 var ringElem = null;
 var movingId = 0;
 var prevFocused = null;
@@ -69,6 +62,14 @@ docElem.addEventListener('focus', function(event) {
 docElem.addEventListener('blur', function() {
 	onEnd();
 }, true);
+
+
+function initialize() {
+	ringElem = doc.createElement('flying-focus'); // use uniq element name to decrease the chances of a conflict with website styles
+	ringElem.id = 'flying-focus';
+	ringElem.style.transitionDuration = ringElem.style.WebkitTransitionDuration = DURATION / 1000 + 's';
+	body.appendChild(ringElem);
+}
 
 
 function onEnd() {
