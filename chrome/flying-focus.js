@@ -32,7 +32,6 @@ docElem.addEventListener('focus', function(event) {
 	if (!ringElem) {
 		isFirstFocus = true;
 		initialize();
-		return;
 	}
 
 	var offset = offsetOf(target);
