@@ -1,4 +1,8 @@
 (function() {
+	if (!window.addEventListener) {
+		return;
+	}
+
 	'use strict';
 
 var DURATION = 150;
