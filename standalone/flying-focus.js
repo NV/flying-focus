@@ -27,7 +27,7 @@ docElem.addEventListener('keydown', function(event) {
 }, false);
 
 
-docElem.addEventListener('focus', function(event) {
+docElem.addEventListener('focus resize', function(event) {
 	var target = event.target;
 	if (target.id === 'flying-focus') {
 		return;
