@@ -4,6 +4,7 @@ var DURATION = 150;
 
 var ringElem = null;
 var movingId = 0;
+var focusEvent = null;
 var prevFocused = null;
 var keyDownTime = 0;
 
@@ -23,7 +24,18 @@ docElem.addEventListener('keydown', function(event) {
 
 
 docElem.addEventListener('focus', function(event) {
-	var target = event.target;
+  focusEvent = event;
+  doFocus();
+}, true);
+
+win.addEventListener('resize', function() {
+  if (focusEvent !== null) {
+    doFocus();
+  }
+}, true);
+
+function doFocus() {
+	var target = focusEvent.target;
 	if (target.id === 'flying-focus') {
 		return;
 	}
@@ -49,7 +61,7 @@ docElem.addEventListener('focus', function(event) {
 	ringElem.classList.add('flying-focus_visible');
 	prevFocused = target;
 	movingId = setTimeout(onEnd, DURATION);
-}, true);
+}
 
 
 docElem.addEventListener('blur', function() {
